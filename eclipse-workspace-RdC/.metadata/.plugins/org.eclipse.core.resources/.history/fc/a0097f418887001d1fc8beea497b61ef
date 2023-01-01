@@ -1,0 +1,79 @@
+package es2;
+
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
+public class Client {
+
+	public static void main(String args[]) {
+		
+		Socket socket = null;
+		DataInputStream dIStr = null;
+		DataOutputStream dOStr = null;
+		String dirToMove = null;
+		int SERVER_PORT = 9000;
+		BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
+		BufferedReader fileReader = null;
+		
+		try {
+			socket = new Socket(InetAddress.getByName("localhost"), SERVER_PORT);
+		} catch (UnknownHostException e) {
+			System.err.println("Host non trovato.");
+			e.printStackTrace();
+			return;
+		} catch (IOException e) {
+			System.err.println("Errore in fase aperuta socket.");
+			e.printStackTrace();
+			return;
+		}
+		try {
+			dOStr = new DataOutputStream(socket.getOutputStream());
+			dIStr = new DataInputStream(socket.getInputStream());
+		} catch (IOException e) {
+			System.err.println("Errore in fase apertura stream.");
+			e.printStackTrace();
+			return;
+		}
+		
+		System.out.println("Inserisci il path della directory da trasferire:");
+		try {
+			while((dirToMove = stdIn.readLine()) != null) {
+				if((new File(dirToMove)).isDirectory()) {
+					for(File temp : new File(dirToMove).listFiles()) {
+						if(temp.isFile()) {
+							System.out.println("Inizio a trasferire "+temp.getName());
+							long fileLen = temp.getTotalSpace();
+							dOStr.writeLong(fileLen);
+							String response = dIStr.readUTF();
+							if(response.equals("attiva")) {
+								dOStr.writeUTF(temp.getName());
+								System.out.println("Inviato il nome file: "+temp.getName());
+								fileReader = new BufferedReader(new FileReader(temp));
+							}else {
+								System.out.println("Il file non è stato accettato.");
+							}
+						}
+					}
+				}else {
+					System.out.println("La dir inserita non è una directory, riprova");
+				}
+				
+				System.out.println("Inserisci il path della directory da trasferire:");
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+}

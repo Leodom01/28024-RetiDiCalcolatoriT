@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy 3 elements to &apos;testDir&apos;&#x0A;- Original project: &apos;RetiDiCalc-Client&apos;&#x0A;- Destination element: &apos;testDir&apos;&#x0A;- Original elements:&#x0A;     file1.txt&#x0A;     file2.txt&#x0A;     randFile" description="Copy files" element1="file1.txt" element2="file2.txt" element3="randFile" files="3" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1672330186265" target="/RetiDiCalc-Client/testDir" units="0" version="1.0"/>
+</session>

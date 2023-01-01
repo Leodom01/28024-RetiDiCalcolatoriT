@@ -1,0 +1,64 @@
+package es1;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
+
+public class RowSwap extends Thread{
+
+	public int port; 
+	public String filename;
+	
+	public String swapRow(String filename, int row1, int row2) {
+		
+	}
+	
+	public RowSwap(int port, String filename) {
+		this.port = port; 
+		this.filename = filename;
+	}
+	
+	public void run() {
+		System.out.println("Partito server per "+this.filename+" sulla porta: "+this.port);
+		
+		try {
+			DatagramSocket socket = new DatagramSocket(this.port);
+			byte[] data = new byte[1024];
+			DatagramPacket packet = new DatagramPacket(data, data.length);
+			
+			while(true) {
+				packet.setData(data);
+				socket.receive(packet);
+				
+				ByteArrayInputStream bInStr = new ByteArrayInputStream(packet.getData(), 0, packet.getLength());
+				DataInputStream dInStream = new DataInputStream(bInStr);
+				
+				String request = dInStream.readUTF();
+				int row1 = Integer.parseInt(request.split(" ")[0]);
+				int row2 = Integer.parseInt(request.split(" ")[1]);
+				
+				String result = this.swapRow(filename, row1, row2);
+				
+				ByteArrayOutputStream bOutStr = new ByteArrayOutputStream();
+				DataOutputStream dOutStr = new DataOutputStream(bOutStr);
+				dOutStr.writeUTF(result);
+				byte[] response = bOutStr.toByteArray();
+				
+				packet.setData(response);
+				socket.send(packet);
+			}
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+}

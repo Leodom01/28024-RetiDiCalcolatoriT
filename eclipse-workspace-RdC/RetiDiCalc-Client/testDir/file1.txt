@@ -1,0 +1,9 @@
+Ecco
+questo
+è 
+il 
+file
+numero 1 della mia lista
+un totale
+di 8 righe
+anzi 9!

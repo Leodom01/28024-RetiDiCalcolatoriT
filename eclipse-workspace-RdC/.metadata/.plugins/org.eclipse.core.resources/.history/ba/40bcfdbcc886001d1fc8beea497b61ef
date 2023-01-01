@@ -1,0 +1,21 @@
+package EsStream;
+
+import java.io.IOException;
+import java.net.ServerSocket;
+
+public class Server {
+
+	public static void main(String args[]) {
+		
+		try {
+			ServerSocket socket = new ServerSocket(9000);
+			socket.setReuseAddress(true);
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+}

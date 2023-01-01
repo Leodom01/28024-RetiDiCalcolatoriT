@@ -1,0 +1,11 @@
+package es1;
+
+import java.util.ArrayList;
+
+public class DiscoveryServer {
+
+	ArrayList<String> fileNames = new ArrayList<>();
+	ArrayList<Integer> port = new ArrayList<>();
+	
+	
+}

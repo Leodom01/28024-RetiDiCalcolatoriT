@@ -1,0 +1,28 @@
+package es1;
+
+import java.util.ArrayList;
+
+public class DiscoveryServer {
+
+	static ArrayList<String> fileNames = new ArrayList<>();
+	static ArrayList<Integer> port = new ArrayList<>();
+	static Integer DSPort;
+	
+	public static void main(String argv[]) {
+		if(argv.length < 3) {
+			System.err.println("Errore nel numero di parametri");
+		}
+		
+		try {
+			DSPort = Integer.parseInt(argv[0]);
+			for(int i = 1; i<argv.length; i=i+2) {
+				fileNames.add(argv[i]);
+				port.add(Integer.parseInt(argv[i+1]));
+			}
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+}

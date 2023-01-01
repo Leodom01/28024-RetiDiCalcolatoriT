@@ -1,0 +1,39 @@
+package es2;
+
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
+public class Client {
+
+	public static void main(String args[]) {
+		
+		Socket socket = null;
+		DataInputStream dIStr = null;
+		DataOutputStream dOStr = null;
+		String dirToMove = null;
+		int SERVER_PORT = 9000;
+		BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
+		
+		try {
+			socket = new Socket(InetAddress.getByName("localhost"), SERVER_PORT);
+		} catch (UnknownHostException e) {
+			System.err.println("Host non trovato.");
+			e.printStackTrace();
+			return;
+		} catch (IOException e) {
+			System.err.println("Errore in fase aperuta socket.");
+			e.printStackTrace();
+			return;
+		}
+		dOStr = new DataOutputStream(socket.getOutputStream());
+		
+	}
+	
+}

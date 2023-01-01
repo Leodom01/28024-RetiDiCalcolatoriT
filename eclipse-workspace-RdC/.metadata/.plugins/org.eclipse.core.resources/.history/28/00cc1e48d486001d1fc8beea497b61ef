@@ -1,0 +1,17 @@
+package es1;
+
+public class RowSwap extends Thread{
+
+	public int port; 
+	public String filename;
+	
+	public RowSwap(int port, String filename) {
+		this.port = port; 
+		this.filename = filename;
+	}
+	
+	public void run() {
+		
+	}
+	
+}
