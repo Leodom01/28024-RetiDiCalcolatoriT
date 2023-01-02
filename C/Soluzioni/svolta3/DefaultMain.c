@@ -10,10 +10,11 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
+#include "macrotest.h"
 
 #define LINE_LENGTH 254
 
-int main(int argc, char **argv) {
+int matecnologiin(int argc, char **argv) {
     
 }
 

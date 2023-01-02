@@ -28,8 +28,8 @@
 #define CHECK_ARGS_NUMBER(arg_number, err_string)                   \
     do{                                                             \
         if(argc != arg_number){                                     \
-            printf("%s\n", err_string);                             \
-            exit(1);                                                \
+            printf("%s\n", err_string):                             \
+            return EXIT_FAILURE                                     \
         }                                                           \
     }while(0)
                                                                  
@@ -47,7 +47,7 @@
     do{                                                         \
         if(val < 0){                                            \
             printf("%s\n", err_string);                         \
-        exit(1);                                                \
+            return EXIT_FAILURE                                 \
         }                                                       \
     }while(0)
 
@@ -71,7 +71,7 @@
                 if ((port_arg[nread] < '0') || (port_arg[nread] > '9')) {   \
                     printf("%s\n", err_string);                             \
                     printf("Error: %s port\n", port_arg);                   \
-                    exit(1);                                                \
+                    return EXIT_FAILURE                                     \
                 }                                                           \
                 nread++;                                                    \
         }                                                                   \
@@ -79,7 +79,7 @@
         if (port < 1024 || port > 65535) {                                  \
                 printf("%s\n", err_string);                                 \
                 printf("Error: %s port\n", port_arg);                       \
-                exit(1);                                                    \
+                return EXIT_FAILURE                                         \
         }                                                                   \ 
         *port_int = port;                                                   \
     }while(0)                                                       
@@ -107,16 +107,15 @@
         thisAddr.sin_addr.s_addr = INADDR_ANY;                                                                  \        
         thisAddr.sin_port        = htons(port);                                                                 \
         //Spawn filedescriptor from socket primitive                                                            \            
-        fd_toFill = socket(AF_INET, SOCK_DGRAM, 0);                                                             \
-        if(fd_toFill < 0)? {perror("socket"); exit(2);}                                                         \
+        *fd_toFill = socket(AF_INET, SOCK_DGRAM, 0);                                                            \
         char errorString[2048];                                                                                 \        
         sprintf(errorString, "Error while calling socket to open fd while UDP connection at port %d\n", port);  \        
         CHECK_VAL_NOT_LESS_0(*fd_toFill, errorString);                                                          \
-        if(setsockopt(fd_toFill, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(on)) < 0){                              \
+        if(setsockopt(*fd_toFill, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(on)) < 0){                              \
             sprintf(errorString, "Error while setting socket options on port %d", port);                        \
             printf("%s", errorString);                                                                          \
         }                                                                                                       \
-        if (bind(fd_toFill, (struct sockaddr *)&servaddr, sizeof(servaddr)) < 0) {                             \
+        if (bind(*fd_toFill, (struct sockaddr *)&servaddr, sizeof(servaddr)) < 0) {                             \
             sprintf(errorString, "Error while binding socket on port %d", port);                                \
             printf("%s", errorString);                                                                          \
         }                                                                                                       \
@@ -145,17 +144,16 @@
         thisAddr.sin_addr.s_addr = INADDR_ANY;                                                                  \        
         thisAddr.sin_port        = htons(port);                                                                 \
         //Spawn filedescriptor from socket primitive                                                            \            
-        fd_toFill = socket(AF_INET, SOCK_STREAM, 0);                                                            \
-        if(fd_toFill < 0)? {perror("socket"); exit(2);}                                                         \
+        *fd_toFill = socket(AF_INET, SOCK_STREAM, 0);                                                           \
         char errorString[2048];                                                                                 \        
         sprintf(errorString, "Error while calling socket to open fd while TCP connection at port %d\n", port);  \        
         CHECK_VAL_NOT_LESS_0(*fd_toFill, errorString);                                                          \
-        if(setsockopt(fd_toFill, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(on)) < 0){                               \
-            perror("setsockopt");                                                                               \
-            exit(2);                                                                                            \
+        if(setsockopt(*fd_toFill, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(on)) < 0){                              \
+            sprintf(errorString, "Error while setting socket options on port %d", port);                        \
+            printf("%s", errorString);                                                                          \
         }                                                                                                       \
-        if (bind(fd_toFill, (struct sockaddr *)&servaddr, sizeof(servaddr)) < 0) {                              \
-            perror("bind");                                                                                     \
-            exit(2);                                                                                            \
+        if (bind(*fd_toFill, (struct sockaddr *)&servaddr, sizeof(servaddr)) < 0) {                             \
+            sprintf(errorString, "Error while binding socket on port %d", port);                                \
+            printf("%s", errorString);                                                                          \
         }                                                                                                       \
     }while(0)
