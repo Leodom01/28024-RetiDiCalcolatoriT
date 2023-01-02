@@ -13,6 +13,13 @@
 
 #define LINE_LENGTH 254
 
+//In caso in cui il main thread generi dei figli, poi ricordati di fare signal(gestore, SIGCHLD)
+int gestore(int signo){
+    int stato;
+    printf("In esecuzione gestore di SIGCHLD\n");
+    wait(&stato);
+}
+
 int main(int argc, char **argv) {
     
 }
